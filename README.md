@@ -1,78 +1,93 @@
-# Database Services with Docker Compose
+# Configuração do Docker Compose para Ambiente Multi-Banco de Dados
 
-Este projeto fornece um ambiente Docker Compose para executar três tipos de bancos de dados: MySQL, PostgreSQL e SQL Server. Cada serviço de banco de dados é isolado em um contêiner individual e possui volumes persistentes para armazenar dados.
+Este repositório contém uma configuração do Docker Compose para criar um ambiente multi-banco de dados. Ele utiliza containers Docker para executar simultaneamente bancos de dados MySQL, PostgreSQL e SQL Server, sendo ideal para desenvolvimento ou testes. Essa configuração permite iniciar rapidamente esses bancos de dados sem a necessidade de instalá-los individualmente.
 
 ## Pré-requisitos
+Antes de começar, certifique-se de que o Docker e o Docker Compose estejam instalados em seu sistema. Você pode baixar e instalar o Docker a partir do site oficial: [Download do Docker](https://www.docker.com/get-started)
 
-- Docker e Docker Compose instalados no seu sistema.
-- Ambiente WSL2 para uso no Windows.
+
 
 ## Como usar
 
-1. Clone este repositório para o seu sistema.
+1. Clone este repositório para a sua máquina local:
+
+   ```bash
+   git clone https://github.com/jordhanfelix/docker-database
+   ```
 
 2. Abra um terminal e navegue até o diretório do projeto.
+
+```bash
+   cd seu-repo
+   ```
 
 3. Execute o comando a seguir para iniciar os serviços dos bancos de dados:
 
    ```bash
    docker-compose up -d
-
-## Acesso através do IP do Linux no WSL2
-Para acessar os contêineres de banco de dados em execução através do IP do seu Linux no WSL2, siga estas etapas:
-
-1. Use os seguintes comandos para obter os IPs dos contêineres:
-
-## MySQL:
-
-   ```bash
-   docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql
    ```
-## PostgreSQL:
+A opção -d executa os containers em segundo plano.
 
-   ```bash
-   docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgres
-   ```
-## SQL Server:
+4. Uma vez que os containers estejam em execução, você pode acessar os bancos de dados usando os seguintes detalhes de conexão:
 
-   ```bash
-   docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sqlserver
-   ```
-Com os IPs dos contêineres em mãos, você pode configurar o redirecionamento de portas usando o comando socat. 
+- **MySQL**:
+  - Host: localhost
+  - Porta: 3306
+  - Banco de Dados: mysqldb
+  - Usuário: root
+  - Senha: root
 
-2. Instale o socat usando o seguinte comando:
+- **PostgreSQL**:
+  - Host: localhost
+  - Porta: 5432
+  - Banco de Dados: postgresdb
+  - Usuário: postgres
+  - Senha: postgres
 
-   ```bash
-   sudo apt-get update
-   sudo apt-get install socat
-   ```
+- **SQL Server**:
+  - Host: localhost
+  - Porta: 1433
+  - Banco de Dados: (Use o nome de banco de dados desejado)
+  - Usuário: sa
+  - Senha: admin@password
 
-   Agora, você pode configurar o redirecionamento de portas para cada banco de dados. 
 
-3. Configure o redirecionamento de portas substituindo <CONTAINER_IP> pelo IP específico do contêiner:
-##  MySQL:
+**Personalização**
 
-   ```bash
-   socat TCP-LISTEN:3306,fork TCP:<CONTAINER_IP>:3306
-   ```
-## PostgreSQL:
+- Se você desejar utilizar nomes de bancos de dados, nomes de usuários ou senhas diferentes, pode modificar as variáveis de ambiente correspondentes no arquivo `docker-compose.yml`.
 
-   ```bash
-   socat TCP-LISTEN:5432,fork TCP:<CONTAINER_IP>:5432
-   ```
-## SQL Server:
+- Ajuste as portas expostas, se necessário. Lembre-se de atualizar também os detalhes de conexão caso altere as mapeações de portas.
 
-   ```bash
-   socat TCP-LISTEN:1433,fork TCP:<CONTAINER_IP>:1433
-   ```
+- A persistência dos dados é assegurada por meio de volumes Docker. Você pode modificar os nomes dos volumes no arquivo `docker-compose.yml`, se necessário.
 
-Isso criará um redirecionamento de porta do IP do seu WSL2 para o IP do contêiner. Agora você poderá acessar os bancos de dados usando os IPs do WSL2. Certifique-se de manter esses comandos em execução para que o redirecionamento de portas seja mantido.
+**Notas Importantes**
 
-Lembre-se de que essa solução de redirecionamento de portas é útil para acesso local e para fins de desenvolvimento. Se você precisar de acesso a partir de outros dispositivos ou em um ambiente de produção, pode ser necessário configurar as redes do Docker de forma mais avançada ou usar soluções de proxy reverso.
+- Essa configuração é destinada a fins de desenvolvimento ou testes e pode não ser adequada para ambientes de produção.
 
-## Parar os serviços
+- Certifique-se de que as senhas escolhidas sejam seguras e não acessíveis publicamente.
 
-```bash
-   docker-compose down
-   ```
-Lembre-se de que as informações de conexão (host, porta, nome de usuário, senha) podem variar dependendo das configurações do seu ambiente Docker
+- Sempre mantenha a sua instalação do Docker e as imagens atualizadas para se beneficiar das últimas correções de segurança.
+
+**Agradecimentos**
+
+Esta configuração do Docker Compose foi inspirada por diversos recursos e tutoriais online. Gostaríamos de expressar nossa gratidão aos autores e contribuidores que compartilharam seus conhecimentos e expertise.
+
+**Colaboração**
+
+Se você estiver interessado em colaborar e contribuir para a melhoria deste projeto, ficaremos felizes em receber suas contribuições! Seja para adicionar novos recursos, corrigir problemas ou otimizar o código, a sua participação é bem-vinda.
+
+Para colaborar, siga os seguintes passos:
+
+1. **Fork** este repositório para a sua própria conta.
+2. Faça as alterações desejadas no seu fork.
+3. Crie um **Pull Request** (PR) neste repositório original com uma descrição clara das suas mudanças e os motivos por trás delas.
+
+Lembramos que todas as contribuições devem seguir os padrões de código, diretrizes e respeitar a licença MIT deste projeto.
+
+Agradecemos antecipadamente por qualquer contribuição que você possa oferecer para tornar este projeto ainda melhor!
+
+---
+
+**Licença**
+
+Este projeto está licenciado sob a Licença MIT.
