@@ -27,6 +27,8 @@ services:
       - POSTGRES_PASSWORD=postgres
     networks:
       - database-network
+    ports:
+      - "5432:5432"
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -40,6 +42,8 @@ services:
       - SA_PASSWORD=admin@password
     networks:
       - database-network
+    ports:
+      - "1433:1433"
 
 networks:
   database-network:
