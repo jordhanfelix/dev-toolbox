@@ -6,27 +6,27 @@ services:
     container_name: mysql
     restart: always
     tty: true
+    networks:
+      - database-network
     volumes:
-      - ./mysql:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=mysqldb
       - MYSQL_ROOT_PASSWORD=root
-    networks:
-      - database-network
 
   postgres:
-    image: postgres:13
+    image: postgres
     container_name: postgres
     restart: always
     tty: true
+    networks:
+      - database-network
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgresdb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    networks:
-      - database-network
     ports:
       - "5432:5432"
 
@@ -35,16 +35,21 @@ services:
     container_name: sqlserver
     restart: always
     tty: true
+    networks:
+      - database-network
     volumes:
-      - ./sqlserver:/var/opt/mssql
+      - sqlserver-data:/var/opt/mssql
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=admin@password
-    networks:
-      - database-network
     ports:
       - "1433:1433"
 
 networks:
   database-network:
     driver: bridge
+
+volumes:
+  mysql-data:
+  postgres-data:
+  sqlserver-data:
