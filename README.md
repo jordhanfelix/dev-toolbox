@@ -17,7 +17,7 @@ Antes de começar, certifique-se de que o Docker e o Docker Compose estejam inst
 
 2. Abra um terminal e navegue até o diretório do projeto.
 
-```bash
+   ```bash
    cd seu-repo
    ```
 
