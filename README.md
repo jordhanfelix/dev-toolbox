@@ -18,7 +18,7 @@ Antes de começar, certifique-se de que o Docker e o Docker Compose estejam inst
 2. Abra um terminal e navegue até o diretório do projeto.
 
    ```bash
-   cd seu-repo
+   cd docker-database
    ```
 
 3. Execute o comando a seguir para iniciar os serviços dos bancos de dados:
